@@ -5,6 +5,7 @@ variable "project" {
 
 variable "bucket" {
   description = "Name of bucket used for storing terraform state"
+  type = string
 }
 
 variable "region" {
