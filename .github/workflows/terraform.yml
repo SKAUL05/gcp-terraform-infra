@@ -1,0 +1,63 @@
+name: Create GCP Infrastructure
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  GCP_PROJECT: ${{ secrets.PROJECT_ID }}
+  BUCKET_NAME: '${{ secrets.PROJECT_ID }}-tfstate'
+  SA_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+jobs:
+  create-gcp-bucket:
+    name: 'GCP-Bucket-Creation'
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@0.1.3
+      with:
+        service_account_key: $SA_CREDENTIALS
+        project_id: $GCP_PROJECT
+        export_default_credentials: true 
+    
+    - name: 'Create Bucket & Enable Object Versioning'
+      run: |-
+        gsutil mb gs://$BUCKET_NAME || echo "Bucket Already Exists"
+        gsutil versioning set on gs://$BUCKET_NAME || echo "Versioning Already Enabled"
+  
+  terraform:
+    name: 'Terraform'
+    needs: 'create-gcp-bucket'
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: $SA_CREDENTIALS
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: |-     
+        terraform init -backend-config='credentials=$SA_CREDENTIALS' -backend-config "bucket=$BUCKET_NAME"
+        
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan -var 'credentials=$SA_CREDENTIALS' -var "project=$GCP_PROJECT"
+
+      # On push to master, build or change infrastructure according to Terraform configuration files
+      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    - name: Terraform Apply
+      run: terraform apply -var 'credentials=$SA_CREDENTIALS' -var "project=$GCP_PROJECT" -auto-approve
