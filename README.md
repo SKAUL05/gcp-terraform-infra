@@ -26,7 +26,7 @@
   ![Service Account JSON](/assets/service-account-json-modified.jpg)
 
 - Add Github Secrets
-  - Go to repo that you forked from https://github.com/SKAUL05/cc-python-gae
+  - Go to repo that you forked from https://github.com/SKAUL05/gcp-terraform-infra
   - Go to Actions & Click **I understand my workflows, go ahead & enable them**
   ![Update Workflow](/assets/understand-workflows.JPG)
   - Go to **Settings > Secrets**
