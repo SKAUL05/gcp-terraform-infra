@@ -2,7 +2,7 @@
 
 #### Step by Step Guide
 
-1. Setting up Google Cloud Project (skip if you already have a GCP Project)
+1. Setting up Google Cloud Project (skip if you already have a GCP Account)
 -  Go to [Google Cloud](https://cloud.google.com/) and click on **Get Started for FREE**.
 -  Login using your gmail account, choose your country, accept terms and conditions and click **Continue**.
 -  In the next step, fill your details, like account type, Name, Address, credit card details, tax information, etc. If you have old Gmail account and all the information is already there it would take it and you might not have to fill all the details.
@@ -10,7 +10,17 @@
 -  Google will setup your cloud account and in few seconds your Google Cloud Platform account will be ready to start deploying applications on it. It will look like below:
 ![Project Setup](/assets/gcp-project-setup-modified.jpg)
 
-2. Creating Service Account and store credentials in Github
+2. Creating new GCP Project and Linking to Billing Account
+- Go to [Manage Resources Page](https://console.cloud.google.com/cloud-resource-manager?_ga=2.16905723.313995043.1600681234-1805943322.1596519952) and click on **New Project**
+- Fill in the Project Name and keep location as it is. You can also **Edit** Project ID according to availability. Once done click on **Create** and your New GCP Project will be created.
+![New Project](/assets/new-project-description-modified.jpg)
+- After you have created your project. Go to Billing and click on **Link Billing Account**
+![Link Billing](/assets/billing-account-modified.jpg)
+- Select Billing Account from dropdown menu and click on **Set Account**
+![Set Billing Account](/assets/set-billing-account-modified.jpg)
+
+
+3. Creating Service Account and store credentials in Github
 
 - Creating Service Account and provide owner access
   - Go to **Navigation Menu(Top left Corner) > IAM & Admin > Service Accounts**
