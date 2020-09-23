@@ -46,8 +46,12 @@
   - Again click on New Secret and add Name as **ACCOUNT_KEY** and value as *contents of json file that you downloaded and click on Add Secret
 
 
-#### Now you are good to go, whenever you push anything to your repo's master branch your infrastructure will be created.
- - Whenever you push to master branch you can see your Github Action Running like in below image
+#### Now you are good to go, you can run github action and create infrastructure that can be used by client repo for deployment
+ - To run Github Action, go to Actions and click on **Create GCP Infrastructure**
+ ![Action Workflow](/assets/action-workflow-modified.jpg)
+ - Click on **Run Workflow** dropdown button, a dialog appears, keep all items as it is and click on **Run Workflow**
+ ![Run Workflow](/assets/run-workflow-modified.jpg)
+ - Once you run workflow you can see your Github Action Running like in below image
  ![Github Action Running](/assets/github-infra-deploy.JPG)
  - When this Action gets completed you can headover to [client repo]() to deploy your app on App Engine.
 
