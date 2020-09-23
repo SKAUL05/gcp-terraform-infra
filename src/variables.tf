@@ -28,12 +28,12 @@ variable "credentials" {
 variable "service_list" {
     type = list
     default = [
-	"cloudresourcemanager.googleapis.com",
-    "serviceusage.googleapis.com",
-    "logging.googleapis.com",
+	"cloudresourcemanager.googleapis.com",  # Creates, reads, and updates metadata for Google Cloud Platform resource containers
+    "serviceusage.googleapis.com",  # Enables services that service consumers want to use on Google Cloud Platform
+    "logging.googleapis.com",  # Writes log entries and manages your Cloud Logging configuration
     "admin.googleapis.com",
-    "appengine.googleapis.com",
-    "storage-api.googleapis.com",
-	"containerregistry.googleapis.com",
+    "appengine.googleapis.com",  # Provisions and manages developers' App Engine applications
+    "storage-api.googleapis.com",  # Lets you store and retrieve potentially-large, immutable data objects
+	"containerregistry.googleapis.com",  # Provides secure, private Docker image storage on Google Cloud Platform
   ]
 }
