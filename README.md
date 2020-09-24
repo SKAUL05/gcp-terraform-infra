@@ -13,9 +13,9 @@
 2. Creating new GCP Project and Linking to Billing Account
 - Go to [Manage Resources Page](https://console.cloud.google.com/cloud-resource-manager?_ga=2.16905723.313995043.1600681234-1805943322.1596519952) and click on **New Project**
 - Fill in the Project Name and keep location as it is. You can also **Edit** Project ID according to availability. Once done click on **Create** and your New GCP Project will be created.
-![New Project](/assets/new-project-description-modified.jpg)
+![New Project](/assets/new-project-description-fied.jpg)
 - After you have created your project. Go to Billing and click on **Link Billing Account**
-![Link Billing](/assets/billing-account-modified.jpg)
+![Link Billing](/assets/billing-account-fied.jpg)
 - Select Billing Account from dropdown menu and click on **Set Account**
 ![Set Billing Account](/assets/set-billing-account-modified.jpg)
 
