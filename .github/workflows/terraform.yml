@@ -28,7 +28,7 @@ jobs:
          run: |-
            cd src/
            tflint --version
-           tflint
+           tflint --var "project=$GCP_PROJECT" --var "bucket=$BUCKET_NAME"
 
 
       
