@@ -8,7 +8,7 @@ on:
 
 env:
   GCP_PROJECT: ${{ secrets.PROJECT_ID }}
-  BUCKET_NAME: '${{ secrets.PROJECT_ID }}-tfstate'
+  BUCKET_NAME: ${{ secrets.PROJECT_ID }}-tfstate
   SA_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
 jobs:
