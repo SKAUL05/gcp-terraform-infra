@@ -17,14 +17,11 @@ jobs:
     name: "Lint Check"
     runs-on: ubuntu-latest
     steps:
-       - name: Checkout
-         uses: actions/checkout@v2
-       - name: tflint
-         uses: reviewdog/action-tflint@master
+       - name: TfLint
+       - uses: actions/checkout@v2
+       - uses: rickardl/tflint-action@v1
          with:
-          github_token: ${{ secrets.github_token }}
-          working_directory: "src" # Optional. Change working directory
-          fail_on_error: "true" # Optional. Fail action if errors are found
+           tflint_actions_folder: "src"
       
   create-gcp-bucket:
     name: 'GCP-Bucket-Creation'
