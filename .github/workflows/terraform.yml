@@ -8,7 +8,7 @@ on:
 
 env:
   GCP_PROJECT: ${{ secrets.PROJECT_ID }}
-  BUCKET_NAME: "${{ secrets.PROJECT_ID }}-tfstate"
+  BUCKET_NAME: '${{ secrets.PROJECT_ID }}-tfstate'
   SA_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
     - name: 'Create Bucket & Enable Object Versioning'
       run: |-
         echo $BUCKET_NAME
-        gsutil mb gs://$BUCKET_NAME || echo "Bucket Already Exists"
+        gsutil mb -p $GCP_PROJECT gs://$BUCKET_NAME || echo "Bucket Already Exists"
         gsutil versioning set on gs://$BUCKET_NAME || echo "Versioning Already Enabled"
   
   terraform:
