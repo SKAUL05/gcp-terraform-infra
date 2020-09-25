@@ -12,8 +12,23 @@ env:
   SA_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
 jobs:
+
+  lint:
+    name: "Lint Check"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: rickardl/tflint-action@v1
+      
+      - name: Run Lint
+        run: |-
+           cd src/
+           tflint
+          
+      
   create-gcp-bucket:
     name: 'GCP-Bucket-Creation'
+    needs: 'lint'
     runs-on: ubuntu-latest
 
     steps:
