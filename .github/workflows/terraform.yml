@@ -18,9 +18,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: rickardl/tflint-action@v1
-        with:
-          tflint_actions_folder: "../src/"
+        
+      - name: 'run lint'
+        run: |-
+          curl -L "$(curl -Ls https://api.github.com/repos/terraform-linters/tflint/releases/latest | grep -o -E "https://.+?_linux_amd64.zip")" -o tflint.zip && unzip tflint.zip && rm tflint.zip
+          cd src/
+          tflint
+#       - uses: rickardl/tflint-action@v1
+#         with:
+#           tflint_actions_folder: "../src/"
       
   create-gcp-bucket:
     name: 'GCP-Bucket-Creation'
