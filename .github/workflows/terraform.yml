@@ -67,3 +67,8 @@ jobs:
       run: |-
         cd src/
         terraform apply -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" -auto-approve
+
+    - name: Terraform Destroy
+      run: |-
+        cd src/
+        terraform destroy -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" -auto-approve
