@@ -17,12 +17,20 @@ jobs:
     name: "Lint Check"
     runs-on: ubuntu-latest
     steps:
-       - name: TfLint
-         uses: actions/checkout@v2
-       - name: Lint  
-         uses: rickardl/tflint-action@v1
+       - uses: actions/checkout@v1
+         name: Checkout source code
+
+       - uses: lablabs/setup-tflint@v1
+         name: Setup TFLint
          with:
-           tflint_actions_folder: "src"
+            tflint_version: v0.18.0
+       - name: Run TfLint
+         run: |-
+           cd src/
+           tflint --version
+           tflint
+
+
       
   create-gcp-bucket:
     name: 'GCP-Bucket-Creation'
