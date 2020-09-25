@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: rickardl/tflint-action@v1
         with:
-          tflint_actions_folder: /home/runner/work/gcp-terraform-infra/gcp-terraform-infra/src
+          tflint_actions_folder: gcp-terraform-infra/src
       
   create-gcp-bucket:
     name: 'GCP-Bucket-Creation'
