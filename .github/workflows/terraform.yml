@@ -19,12 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: rickardl/tflint-action@v1
-      
-      - name: Run Lint
-        run: |-
-           cd src/
-           tflint
-          
+        with:
+          tflint_actions_folder: src
       
   create-gcp-bucket:
     name: 'GCP-Bucket-Creation'
