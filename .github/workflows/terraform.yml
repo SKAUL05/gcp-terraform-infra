@@ -12,6 +12,7 @@ env:
   SA_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
 jobs:
+      
   create-gcp-bucket:
     name: 'GCP-Bucket-Creation'
     runs-on: ubuntu-latest
@@ -48,13 +49,18 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         cli_config_credentials_token: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-
+    
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: |-     
         cd src/
         terraform init -backend-config "credentials=$SA_CREDENTIALS" -backend-config "bucket=$BUCKET_NAME"
-        
+    
+    - name: Terraform Validate
+      run: |-
+        cd src/
+        terraform validate -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME"
+
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: |-
