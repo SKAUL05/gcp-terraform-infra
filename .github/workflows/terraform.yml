@@ -59,7 +59,7 @@ jobs:
     - name: Terraform Validate
       run: |-
         cd src/
-        terraform validate -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME"
+        terraform validate
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
@@ -78,3 +78,24 @@ jobs:
     #   run: |-
     #     cd src/
     #     terraform destroy -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" -auto-approve
+
+
+  fail_check:
+    name: 'Send Failure Notification'
+    needs: 'terraform'
+    runs-on: ubuntu-latest
+    if: env.WORKFLOW_CONCLUSION == 'failure'
+    steps:
+      - name: 'Sending Notification'
+        uses: dawidd6/action-send-mail@v2
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{secrets.MAIL_USERNAME}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject: Github Actions job failed
+          body: Build job of ${{github.repository}} failed!
+          to: kaul.sarath@gmail.com
+          from: GCP Terraform Infra # <user@example.com>
+          # Optional content type (defaults to text/plain):
+          content_type: text/html
