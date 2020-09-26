@@ -84,11 +84,12 @@ jobs:
     name: 'Send Failure Notification'
     needs: 'terraform'
     runs-on: ubuntu-latest
-    if: env.WORKFLOW_CONCLUSION == 'failure'
+    if: always() # set always
     steps:
-      - name: 'Sending Notification'
-        uses: dawidd6/action-send-mail@v2
+      - uses: technote-space/workflow-conclusion-action@v1  
+      - uses: dawidd6/action-send-mail@v2
         with:
+          status: failure
           server_address: smtp.gmail.com
           server_port: 465
           username: ${{secrets.MAIL_USERNAME}}
@@ -99,3 +100,4 @@ jobs:
           from: GCP Terraform Infra # <user@example.com>
           # Optional content type (defaults to text/plain):
           content_type: text/html
+        if: env.WORKFLOW_CONCLUSION == 'failure' # notify only if failure
