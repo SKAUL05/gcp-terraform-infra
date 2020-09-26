@@ -15,7 +15,6 @@ jobs:
       
   create-gcp-bucket:
     name: 'GCP-Bucket-Creation'
-    needs: 'lint'
     runs-on: ubuntu-latest
 
     steps:
