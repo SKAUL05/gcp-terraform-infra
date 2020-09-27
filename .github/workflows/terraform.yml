@@ -69,10 +69,10 @@ jobs:
 
       # On push to master, build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-    # - name: Terraform Apply
-    #   run: |-
-    #     cd src/
-    #     terraform apply -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" -auto-approve
+    - name: Terraform Apply
+      run: |-
+        cd src/
+        terraform apply -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" -auto-approve
 
     # - name: Terraform Destroy
     #   run: |-
@@ -80,23 +80,3 @@ jobs:
     #     terraform destroy -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" -auto-approve
 
 
-  fail_check:
-    name: 'Send Failure Notification'
-    needs: 'terraform'
-    runs-on: ubuntu-latest
-    if: always() # set always
-    steps:
-      - uses: technote-space/workflow-conclusion-action@v1  
-      - uses: dawidd6/action-send-mail@v2
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{secrets.MAIL_USERNAME}}
-          password: ${{secrets.MAIL_PASSWORD}}
-          subject: Github Actions job failed
-          body: Build job of ${{github.repository}} failed!
-          to: kaul.sarath@gmail.com
-          from: GCP Terraform Infra # <user@example.com>
-          # Optional content type (defaults to text/plain):
-          content_type: text/html
-        if: env.WORKFLOW_CONCLUSION == 'failure' # notify only if failure
