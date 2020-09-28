@@ -14,7 +14,7 @@ env:
 jobs:
       
   create-gcp-bucket:
-    name: 'GCP-Bucket-Creation'
+    name: 'GCP Bucket Creation'
     runs-on: ubuntu-latest
 
     steps:
@@ -55,7 +55,8 @@ jobs:
       run: |-     
         cd src/
         terraform init -backend-config "credentials=$SA_CREDENTIALS" -backend-config "bucket=$BUCKET_NAME"
-    
+   
+    # Valdate the configuration files in a directory
     - name: Terraform Validate
       run: |-
         cd src/
@@ -68,15 +69,7 @@ jobs:
         terraform plan -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME"
 
       # On push to master, build or change infrastructure according to Terraform configuration files
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
       run: |-
         cd src/
         terraform apply -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" -auto-approve
-
-    # - name: Terraform Destroy
-    #   run: |-
-    #     cd src/
-    #     terraform destroy -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" -auto-approve
-
-
