@@ -15,6 +15,7 @@ resource "google_project_service" "enable_services" {
   service = var.service_list[count.index]
 
   disable_dependent_services = true
+  disable_on_destroy = false
 }
 
 # Creating Google App Engine Application
