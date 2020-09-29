@@ -43,7 +43,7 @@
   - Click on **New Secret** and add Name as **PROJECT_ID** and value as Project ID of your GCP Project and click on Add Secret
   ![New Secret](/assets/secret-project.JPG)
 
-  - Again click on New Secret and add Name as **ACCOUNT_KEY** and value as *contents of json file that you downloaded and click on Add Secret
+  - Again click on New Secret and add Name as **GOOGLE_APPLICATION_CREDENTIALS** and value as *contents of json file that you downloaded and click on Add Secret
 
 
 #### Now you are good to go, you can run github action and create infrastructure that can be used by client repo for deployment
@@ -53,5 +53,5 @@
  ![Run Workflow](/assets/run-workflow-modified.jpg)
  - Once you run workflow you can see your Github Action Running like in below image
  ![Github Action Running](/assets/github-infra-deploy.JPG)
- - When this Action gets completed you can headover to [client repo]() to deploy your app on App Engine.
+ - When this Action gets completed you can headover to [client repo](https://github.com/ayu004/deploy-springboot-on-appengine) to deploy your app on App Engine.
 
