@@ -54,7 +54,7 @@ jobs:
     - name: Terraform Init
       run: |-     
         cd src/
-        terraform init -backend-config="credentials=$GOOGLE_APPLICATION_CREDENTIALS" -backend-config="bucket=$BUCKET_NAME"
+        terraform init -backend-config="credentials=$SA_CREDENTIALS" -backend-config="bucket=$BUCKET_NAME"
    
     # Valdate the configuration files in a directory
     - name: Terraform Validate
