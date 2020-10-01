@@ -22,4 +22,3 @@ resource "google_project_service" "enable_services" {
 resource "google_app_engine_application" "app" {
   depends_on = [google_project_service.enable_services]
   location_id = var.app_engine_location
-}
