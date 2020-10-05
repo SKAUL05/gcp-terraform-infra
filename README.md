@@ -55,3 +55,9 @@
  ![Github Action Running](/assets/github-infra-deploy.JPG)
  - When this Action gets completed you can headover to [client repo](https://github.com/ayu004/deploy-springboot-on-appengine) to deploy your app on App Engine.
 
+
+##### You can also **destroy** infrastructure created using below command
+  ```
+  terraform destroy
+  ```
+**Note:** Destroy command doesn't work properly for App Engine applications due to certain Terraform [Limitations](https://www.terraform.io/docs/providers/google/r/app_engine_application.html)
