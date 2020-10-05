@@ -8,7 +8,7 @@
 -  In the next step, fill your details, like account type, Name, Address, credit card details, tax information, etc. If you have old Gmail account and all the information is already there it would take it and you might not have to fill all the details.
 -  After filling all the details click on **Start my free trial**.
 -  Google will setup your cloud account and in few seconds your Google Cloud Platform account will be ready to start deploying applications on it. It will look like below:
-![Project Setup](/assets/gcp-project-setup-modified.jpg)
+![Project Setup](/assets/gcp-project-setups-modified.jpg)
 
 2. Creating new GCP Project and Linking to Billing Account
 - Go to [Manage Resources Page](https://console.cloud.google.com/cloud-resource-manager?_ga=2.16905723.313995043.1600681234-1805943322.1596519952) and click on **New Project**
