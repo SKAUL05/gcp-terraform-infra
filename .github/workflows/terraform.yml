@@ -6,15 +6,26 @@ on:
       - master
   workflow_dispatch:
 
-env:
-  GCP_PROJECT: ${{ secrets.PROJECT_ID }}
-  BUCKET_NAME: "${{ secrets.PROJECT_ID }}-tfstate"
-  SA_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+# env:
+#   GCP_PROJECT: ${{ secrets.PROJECT_ID }}
+#   BUCKET_NAME: "${{ secrets.PROJECT_ID }}-tfstate"
+#   SA_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
 jobs:
-      
+  set-env-variable:
+    name: 'Set Environment Variables'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Set the value
+        run: |
+          echo "GCP_PROJECT=${{ secrets.PROJECT_ID }}" >> $GITHUB_ENV
+          echo "BUCKET_NAME=${{ secrets.PROJECT_ID }}-tfstate" >> $GITHUB_ENV
+          echo "SA_CREDENTIALS=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" >> $GITHUB_ENV
+ 
   create-gcp-bucket:
     name: 'GCP Bucket Creation'
+    needs: 'set-env-variable'
     runs-on: ubuntu-latest
 
     steps:
