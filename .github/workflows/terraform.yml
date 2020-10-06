@@ -55,7 +55,12 @@ jobs:
       id: fmt
       run: |-
         cd src/
-        terraform fmt -check -diff
+        terraform fmt -write=true -diff
+        git config --global user.name github-actions
+        git config --global user.email '${GITHUB_ACTOR}@users.noreply.github.com'          
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+        git commit -am "Formatted TF Code Pushing.."
+        git push --force origin HEAD:$GITHUB_REF
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
