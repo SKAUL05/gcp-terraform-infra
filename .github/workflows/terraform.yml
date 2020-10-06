@@ -6,10 +6,10 @@ on:
       - master
   workflow_dispatch:
 
-env:
-#   GCP_PROJECT: ${{ secrets.PROJECT_ID }}
-#   BUCKET_NAME: "${{ secrets.PROJECT_ID }}-tfstate"
-  SA_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+# env:
+# #   GCP_PROJECT: ${{ secrets.PROJECT_ID }}
+# #   BUCKET_NAME: "${{ secrets.PROJECT_ID }}-tfstate"
+#   SA_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
 jobs:
   set-env-variable:
@@ -19,8 +19,8 @@ jobs:
     steps:
       - name: Set the value
         run: |
-          echo "GCP_PROJECT=${{ secrets.PROJECT_ID }}" >> $GITHUB_ENV
-          echo "BUCKET_NAME="${{ secrets.PROJECT_ID }}-tfstate"" >> $GITHUB_ENV
+          echo 'GCP_PROJECT=${{ secrets.PROJECT_ID }}' >> $GITHUB_ENV
+          echo 'BUCKET_NAME="${{ secrets.PROJECT_ID }}-tfstate"' >> $GITHUB_ENV
  
   create-gcp-bucket:
     name: 'GCP Bucket Creation'
@@ -64,7 +64,7 @@ jobs:
     - name: Terraform Init
       run: |-     
         cd src/
-        terraform init -backend-config "credentials=$SA_CREDENTIALS" -backend-config "bucket=$BUCKET_NAME"
+        terraform init -backend-config "credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" -backend-config "bucket=$BUCKET_NAME"
    
     # Valdate the configuration files in a directory
     - name: Terraform Validate
@@ -76,10 +76,10 @@ jobs:
     - name: Terraform Plan
       run: |-
         cd src/
-        terraform plan -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME"
+        terraform plan -var "credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME"
 
       # On push to master, build or change infrastructure according to Terraform configuration files
     - name: Terraform Apply
       run: |-
         cd src/
-        terraform apply -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" -auto-approve
+        terraform apply -var "credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" -auto-approve
