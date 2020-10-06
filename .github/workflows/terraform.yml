@@ -6,25 +6,14 @@ on:
       - master
   workflow_dispatch:
 
-# env:
-# #   GCP_PROJECT: ${{ secrets.PROJECT_ID }}
-# #   BUCKET_NAME: "${{ secrets.PROJECT_ID }}-tfstate"
-#   SA_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+env:
+  GCP_PROJECT: ${{ secrets.PROJECT_ID }}
+  BUCKET_NAME: "${{ secrets.PROJECT_ID }}-tfstate"
+  SA_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
 jobs:
-  set-env-variable:
-    name: 'Set Environment Variables'
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Set the value
-        run: |
-          echo 'GCP_PROJECT=${{ secrets.PROJECT_ID }}' >> $GITHUB_ENV
-          echo 'BUCKET_NAME=${{ secrets.PROJECT_ID }}-tfstate' >> $GITHUB_ENV
- 
   create-gcp-bucket:
     name: 'GCP Bucket Creation'
-    needs: 'set-env-variable'
     runs-on: ubuntu-latest
 
     steps:
@@ -60,23 +49,61 @@ jobs:
       with:
         cli_config_credentials_token: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
     
+    # Terraform fmt
+    - name: Terraform Format
+      id: fmt
+      run: |-
+      cd src/
+      terraform fmt -check
+
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
+      id: init
       run: |-     
         cd src/
         terraform init -backend-config 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -backend-config 'bucket=$BUCKET_NAME'
    
     # Valdate the configuration files in a directory
     - name: Terraform Validate
+      id: validate
       run: |-
         cd src/
         terraform validate
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
+      id: plan
       run: |-
         cd src/
-        terraform plan -var 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -var "project=$GCP_PROJECT" -var 'bucket=$BUCKET_NAME'
+        terraform plan -var 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -var "project=$GCP_PROJECT" -var 'bucket=$BUCKET_NAME' -no-color
+      continue-on-error: true
+
+    - name: Terraform Status
+      uses: actions/github-script@0.9.0
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            <details><summary>Show Plan</summary>
+            \`\`\`${process.env.PLAN}\`\`\`
+            </details>
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+              
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+    
+    - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
 
       # On push to master, build or change infrastructure according to Terraform configuration files
     - name: Terraform Apply
