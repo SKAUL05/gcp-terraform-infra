@@ -31,8 +31,8 @@ jobs:
     
     - name: 'Create Bucket & Enable Object Versioning'
       run: |-
-        gsutil mb gs://$BUCKET_NAME || echo "Bucket Already Exists"
-        gsutil versioning set on gs://$BUCKET_NAME || echo "Versioning Already Enabled"
+        gsutil mb gs://"$BUCKET_NAME" || echo "Bucket Already Exists"
+        gsutil versioning set on gs://"$BUCKET_NAME" || echo "Versioning Already Enabled"
   
   terraform:
     name: 'Terraform'
@@ -55,19 +55,14 @@ jobs:
       id: fmt
       run: |-
         cd src/
-        terraform fmt -write=true -diff
-        git config --global user.name github-actions
-        git config --global user.email '${GITHUB_ACTOR}@users.noreply.github.com'          
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-        git commit -am "Formatted TF Code Pushing.."
-        git push --force origin HEAD:$GITHUB_REF
+        terraform fmt -check -diff
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       id: init
       run: |-     
         cd src/
-        terraform init -backend-config 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -backend-config 'bucket=$BUCKET_NAME'
+        terraform init -backend-config 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -backend-config "bucket=$BUCKET_NAME"
    
     # Valdate the configuration files in a directory
     - name: Terraform Validate
@@ -81,7 +76,7 @@ jobs:
       id: plan
       run: |-
         cd src/
-        terraform plan -var 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -var "project=$GCP_PROJECT" -var 'bucket=$BUCKET_NAME' -no-color
+        terraform plan -var 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" -no-color
       continue-on-error: true
 
     - name: Terraform Status
@@ -115,4 +110,4 @@ jobs:
     - name: Terraform Apply
       run: |-
         cd src/
-        terraform apply -var 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -var "project=$GCP_PROJECT" -var 'bucket=$BUCKET_NAME' -auto-approve
+        terraform apply -var 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" -auto-approve
