@@ -20,7 +20,7 @@ jobs:
       - name: Set the value
         run: |
           echo "GCP_PROJECT=${{ secrets.PROJECT_ID }}" >> $GITHUB_ENV
-          echo "BUCKET_NAME=${{ secrets.PROJECT_ID }}-tfstate" >> $GITHUB_ENV
+          echo "BUCKET_NAME='${{ secrets.PROJECT_ID }}-tfstate'" >> $GITHUB_ENV
  
   create-gcp-bucket:
     name: 'GCP Bucket Creation'
