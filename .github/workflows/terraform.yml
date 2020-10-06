@@ -90,12 +90,12 @@ jobs:
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*
             <details><summary>Show Plan</summary>
             \`\`\`
-            ${process.env.PLAN}
+              ${process.env.PLAN}
             \`\`\`
-            </details>
+            </details>`;
               
             github.issues.createComment({
               issue_number: ${{ github.event.number }},
