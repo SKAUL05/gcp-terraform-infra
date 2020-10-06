@@ -26,7 +26,7 @@ variable "credentials" {
 }
 
 variable "service_list" {
-    type    = list
+    type = list
     default = [
       "cloudresourcemanager.googleapis.com",  # Creates, reads, and updates metadata for Google Cloud Platform resource containers
       "containerregistry.googleapis.com",     # Provides secure, private Docker image storage on Google Cloud Platform      
