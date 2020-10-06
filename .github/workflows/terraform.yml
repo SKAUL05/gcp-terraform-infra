@@ -6,6 +6,7 @@ on:
       - master
       - ga-actions
   workflow_dispatch:
+  pull_request:
 
 env:
   GCP_PROJECT: ${{ secrets.PROJECT_ID }}
@@ -81,6 +82,7 @@ jobs:
 
     - name: Terraform Status
       uses: actions/github-script@0.9.0
+      if: github.event_name == 'pull_request'
       env:
           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
       with:
@@ -95,7 +97,6 @@ jobs:
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
               
             github.issues.createComment({
-              issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: output
@@ -108,6 +109,7 @@ jobs:
 
       # On push to master, build or change infrastructure according to Terraform configuration files
     - name: Terraform Apply
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: |-
         cd src/
         terraform apply -var 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" -auto-approve
