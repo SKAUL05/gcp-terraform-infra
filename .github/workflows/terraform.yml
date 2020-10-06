@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - ga-actions
   workflow_dispatch:
 
 env:
