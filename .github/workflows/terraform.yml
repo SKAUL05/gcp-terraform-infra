@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - ga-actions
   workflow_dispatch:
   pull_request:
 
@@ -97,6 +96,7 @@ jobs:
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
               
             github.issues.createComment({
+              issue_number: "",
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: output
