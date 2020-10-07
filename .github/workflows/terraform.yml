@@ -100,7 +100,7 @@ jobs:
           *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
 
           github.issues.createComment({
-            issue_number: github.event.number,
+            issue_number: ${{ github.event.number }},
             owner: context.repo.owner,
             repo: context.repo.repo,
             body: output
