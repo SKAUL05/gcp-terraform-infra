@@ -76,7 +76,7 @@ jobs:
       id: plan
       run: |-
         cd src/
-        terraform plan -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" -no-color
+        terraform plan -var "credentials=$SA_CREDENTIALS" -var "project=$GCP_PROJECT" -var "bucket=$BUCKET_NAME" 
       continue-on-error: true
 
     - name: Terraform Status
